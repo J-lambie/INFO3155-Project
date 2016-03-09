@@ -11,7 +11,7 @@ def scanPort(ip, port):
     else:
         return False
 
-for port in range(0,2000):
+for port in range(0,9000):
     value = scanPort(ip, port)
     if value == False:
         print("Secure: " + str(port))
