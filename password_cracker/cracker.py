@@ -1,9 +1,8 @@
 #To add to hash file run python cracker.py <filename> -h
 #To run cracker run python cracker.py <filename> -c
 from sys import argv, exit
-from crypt import crypt
+import hashlib
 
-SALT = 'qd'#Randomly selected
 HASH_FILE_NAME = 'hashes.txt'
 
 def add_to_hash(word_list):
@@ -13,7 +12,7 @@ def add_to_hash(word_list):
     total = len(word_list)
 
     for word in word_list:
-        hashed_word = crypt(word , SALT)
+        hashed_word = hashlib.sha1(word.encode()).hexdigest()
         hash_file.write(hashed_word)
         hash_file.write('\n')
         if(count % 10000 == 0):
@@ -24,18 +23,20 @@ def add_to_hash(word_list):
     print '%d of %d words hashed' % (count, total)
 
 def crack(word_list):
-    found = False
     hash_file = open(HASH_FILE_NAME)
+    matches = 0
 
     encrypted_passwords = hash_file.read().split('\n')
 
     for word in word_list:
-        hashed_word = crypt(word , SALT)
+        hashed_word = hashlib.sha1(word.encode()).hexdigest()
         if(hashed_word in encrypted_passwords):
             print 'Match found: %r' % word
-            found = True
-    if not found:
+            matches += 1
+    if matches == 0:
         print 'No matches found'
+    else:
+        print '%d matches' % (matches)
 
 
 if __name__ == '__main__':
@@ -64,4 +65,3 @@ if __name__ == '__main__':
         print 'No such file %r' % filename
         exit(0)
 
-    
