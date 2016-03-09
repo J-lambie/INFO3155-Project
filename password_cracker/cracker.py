@@ -60,5 +60,8 @@ if __name__ == '__main__':
 
     except KeyError:
         print_argument_error_message()
+    except IOError:
+        print 'No such file %r' % filename
+        exit(0)
 
     
