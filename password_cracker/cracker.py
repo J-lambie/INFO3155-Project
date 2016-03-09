@@ -4,7 +4,7 @@ from sys import argv, exit
 import hashlib
 
 HASH_FILE_NAME = 'hashes.txt'
-RAINBOW_TABLE_DELIMETER = 'COOL_UWI_DELIMETER'
+RAINBOW_TABLE_DELIMITER = 'COOL_UWI_DELIMITER'
 
 def add_to_hash(word_list):
     hash_file = open(HASH_FILE_NAME , 'a')
@@ -13,13 +13,14 @@ def add_to_hash(word_list):
     total = len(word_list)
 
     for word in word_list:
-        sha1_hash = hashlib.sha1(word.encode()).hexdigest()
-        md5_hash = hashlib.md5(word.encode()).hexdigest()
-        hash_file.write(sha1_hash + RAINBOW_TABLE_DELIMETER + md5_hash)
-        hash_file.write('\n')
-        if(count % 10000 == 0):
-            print '%d of %d words hashed' % (count, total)
-        count += 1 
+        if len(word) > 0:
+            sha1_hash = hashlib.sha1(word.encode()).hexdigest()
+            md5_hash = hashlib.md5(word.encode()).hexdigest()
+            hash_file.write(sha1_hash + RAINBOW_TABLE_DELIMITER + md5_hash)
+            hash_file.write('\n')
+            if(count % 10000 == 0):
+                print '%d of %d words hashed' % (count, total)
+            count += 1 
 
     hash_file.close()
     print '%d of %d words hashed' % (count, total)
@@ -30,15 +31,14 @@ def crack(word_list):
 
     encrypted_passwords = hash_file.read().split('\n')
 
+    table = map(lambda x: [x.split(RAINBOW_TABLE_DELIMITER)[0] , x.split(RAINBOW_TABLE_DELIMITER)[1]] if len(x) > 1 else [] , encrypted_passwords)
     for word in word_list:
         sha1_hash = hashlib.sha1(word.encode()).hexdigest()
         md5_hash  = hashlib.md5(word.encode()).hexdigest()
-        for encrypted_password in encrypted_passwords:
-            columns = encrypted_password.split(RAINBOW_TABLE_DELIMETER)
-            if len(columns) > 1 and (sha1_hash == columns[0] or md5_hash == columns[1]):
-                print 'Match found: %r' % word
-                matches += 1
-                break
+        hash_row = [sha1_hash , md5_hash]
+        if hash_row in table:
+            print 'Match found: %r' % word
+            matches += 1
 
     if matches == 0:
         print 'No matches found'
