@@ -4,7 +4,7 @@ import sys
 import optparse
 from datetime import datetime
 
-
+###main("vul_banners.txt", [host], [ports])
 
 def listScan(host, port):
     ip = socket.gethostbyname(host)
@@ -13,16 +13,12 @@ def listScan(host, port):
         socket.setdefaulttimeout(20)
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         res = s.connect_ex((ip, port))
-        if (res == 0):
+        if (res ==   0):
             print("[+]Connection to " + host + " port " + str(port) + " successful!")
-            if port == 80:
-                s.connect_ex((ip,port))
-                banner = s.recv(1024)
-                print('[+]'+ ip + ': ' + '\n' + banner.decode(encoding='UTF-8'))
-            else:
-                s.connect_ex((ip,port))
-                banner = s.recv(1024)
-                print('[+]'+ ip + ': ' + '\n' + banner.decode(encoding='UTF-8'))
+            s.connect_ex((ip,port))
+            s.send('GET HTTP/1.0 \r\n\r\n')
+            banner = s.recv(2048)
+            print('[+]'+ ip + " on port " + str(port) +  ': ' + '\n' + banner.decode(encoding='UTF-8'))
         else:
             print("[-]Connection to " + host + " port " + str(port) + " failed")
         s.close()
@@ -46,24 +42,24 @@ def vul_Check(banner, filename):
 
 
 
-def main (filename, hosts, ports):
+def main ():
    
     #used for parsing filename hosts and ports               
-#    parser = optparse.OptionParser('%prog -f vul_banners.txt -t <host(s)> -p <port(s)>')
-#    parser.add_option('-f', dest='filename', type='string', help='Specify the file. vul_banners.txt ')
-#    parser.add_option('-t', dest='hosts', type='string', help='Specify the host(s). Separate by commas')
-#    parser.add_option('-p', dest='ports', type='string', help='Specify the port(s). Separate by commas')
+    parser = optparse.OptionParser('%prog -f vul_banners.txt -t <host(s)> -p <port(s)>')
+    parser.add_option('-f', dest='filename', type='string', help='Specify the file. vul_banners.txt ')
+    parser.add_option('-t', dest='hosts', type='string', help='Specify the host(s). Separate by commas')
+    parser.add_option('-p', dest='ports', type='string', help='Specify the port(s). Separate by commas')
                    
-#    (options, args) = parser.parse_args()
+    (options, args) = parser.parse_args()
 
     #if no hosts or ports are found, error message is shown
-#    if(options.hosts == None) | (options.ports == None) | (options.filename == None):
-#        print(parser.usage)
-#        exit(0)
+    if(options.hosts == None) | (options.ports == None) | (options.filename == None):
+        print(parser.usage)
+        exit(0)
 
-#    filename = str(options.filename)                                  
-#    hosts = str(options.hosts).split(',')
-#    ports = str(options.ports).split(',')
+    filename = str(options.filename)                                  
+    hosts = str(options.hosts).split(',')
+    ports = str(options.ports).split(',')
 
     print('-'*60)
     print ("Please wait. Scanning ")
@@ -78,14 +74,5 @@ def main (filename, hosts, ports):
         time2 = datetime.now()
         print("Scanning Completed in: ", (time2-time1))
 
-#if __name__ == '__main__':
-#    main()
-    
-
-
-
-    
-
-
-    
-
+if __name__ == '__main__':
+##    main()
