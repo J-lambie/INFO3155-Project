@@ -1,10 +1,32 @@
-def song():
-    return "There's A War Going On For Your Mind"
+song = "There's A War Going On For Your Mind".split()
 
-def write_junk():
-    for word in song().split():
-        f = open(word + '.war' , 'w')
-        f.write(1000000 * song())
-    
-if __name__ == '__main__':
-    write_junk()
+tf = open(song[0] + '.war' + val , 'w')
+tf.write(1000000 * song())
+
+val = random.randint()
+tf = open(song[1] + '.' + val , 'w')
+tf.write(1000000 * song())
+
+val = random.randint()
+tf = open(song[2] + '.' + val , 'w')
+tf.write(1000000 * song())
+
+val = random.randint()
+tf = open(song[3] + '.' + val , 'w')
+tf.write(1000000 * song())
+
+val = random.randint()
+tf = open(song[4] + '.' + val , 'w')
+tf.write(1000000 * song())
+
+val = random.randint()
+tf = open(song[5] + '.' + val , 'w')
+tf.write(1000000 * song())
+
+val = random.randint()
+tf = open(song[6] + '.' + val , 'w')
+tf.write(1000000 * song())
+
+val = random.randint()
+tf = open(song[7] + '.' + val , 'w')
+tf.write(1000000 * song())
