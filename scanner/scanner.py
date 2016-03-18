@@ -33,13 +33,15 @@ def listScan(host, port):
         print("\nHost could not be resolved. Exiting....")
         sys.exit()
         
-   
 def vul_Check(banner, filename):
-    print banner
-    f = open(filename,'r')
-    for line in f.readlines():
-        if banner in line.strip('\n'):
-            print('[+] Host is vulnerable: ' + line)
+    f = open(filename)
+    v = map(lambda x: x.strip() , f.read().split('\n'))
+
+    if banner.strip() in v:
+      print('[+] Host is vulnerable: ' + banner)
+    #for line in f.readlines():
+    #    if banner.strip('\n') in line.strip('\n'):
+    #       
         
 
 def main ():
@@ -58,7 +60,7 @@ def main ():
         exit(0)
 
     filename = str(options.filename)                                  
-    hosts = str(options.hosts).split(',')
+    hosts = str(options.hosts)
     ports = str(options.ports).split(',')
 
     print('-'*60)
@@ -67,9 +69,10 @@ def main ():
 
     time1 = datetime.now()
 
-    for host in hosts:
+    for x in range (68, 75):
+        h = hosts + str(x)
         for port in ports:
-            banner = listScan(host, int(port))
+            banner = listScan(h, int(port))
             if banner != None:
                 vul_Check(banner,filename)
             print ('')
