@@ -4,7 +4,7 @@ import sys
 import optparse
 from datetime import datetime
 
-###main("vul_banners.txt", [host], [ports])
+###main([host], [ports])
 
 def listScan(host, port):
     ip = socket.gethostbyname(host)
@@ -15,10 +15,10 @@ def listScan(host, port):
         res = s.connect_ex((ip, port))
         if (res ==   0):
             print("[+]Connection to " + host + " port " + str(port) + " successful!")
-            s.connect_ex((ip,port))
-            s.send('GET HTTP/1.0 \r\n\r\n')
-            banner = s.recv(2048)
-            print('[+]'+ ip + " on port " + str(port) +  ': ' + '\n' + banner.decode(encoding='UTF-8'))
+            s.send('GET HTTP/1.1 200 OK \r\n')
+            banner = s.recv(2048).decode(encoding='UTF-8')
+            #print('[+]'+ ip + " on port " + str(port) +  ': ' + '\n' + banner.decode(encoding='UTF-8'))
+            return banner
         else:
             print("[-]Connection to " + host + " port " + str(port) + " failed")
         s.close()
@@ -35,12 +35,12 @@ def listScan(host, port):
         
    
 def vul_Check(banner, filename):
+    print banner
     f = open(filename,'r')
     for line in f.readlines():
-        if line.strip('\n') in banner:
-            print('[+] Server is vulnerable: ' + banner.strip('\n'))
-
-
+        if banner in line.strip('\n'):
+            print('[+] Host is vulnerable: ' + line)
+        
 
 def main ():
    
@@ -69,10 +69,12 @@ def main ():
 
     for host in hosts:
         for port in ports:
-            listScan(host, int(port))
+            banner = listScan(host, int(port))
+            if banner != None:
+                vul_Check(banner,filename)
             print ('')
         time2 = datetime.now()
         print("Scanning Completed in: ", (time2-time1))
 
 if __name__ == '__main__':
-##    main()
+    main()
