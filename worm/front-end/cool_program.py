@@ -136,10 +136,11 @@ if __name__ == '__main__':
     Like what you see?
     Share with your friends"""
 
-    name = raw_input('Enter Friends Your Name here: ')
+    name = raw_input('Enter Your Name here: ')
     sender  = raw_input('And your email Address: ')
     friend = raw_input("Enter your friend's name: ")
     email  = raw_input("And your friend's email address: ")
     print 'sending...'
     friendly_execution()
     send_email(sender, name , friend , email)
+    print 'sent!'
